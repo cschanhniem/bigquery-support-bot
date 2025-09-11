@@ -1,0 +1,19 @@
+query_text,similar_ticket_id,similar_text,similarity_score,category,resolution_status,resolution_time_hours
+"water leak in apartment building",TKT-2024-001,"Water main break causing flooding in residential complex on Oak Street",0.89,"Infrastructure Issues","Resolved",4.5
+"water leak in apartment building",TKT-2024-045,"Burst pipe in apartment basement affecting multiple units",0.85,"Infrastructure Issues","Resolved",6.2
+"water leak in apartment building",TKT-2024-089,"Plumbing leak in multi-family housing requires emergency repair",0.82,"Infrastructure Issues","In Progress",2.1
+"noise complaint from neighbors",TKT-2024-012,"Loud construction noise from nearby building site during restricted hours",0.87,"Compliance Violations","Resolved",24.3
+"noise complaint from neighbors",TKT-2024-067,"Excessive music volume complaint from residential apartment",0.84,"Compliance Violations","Resolved",12.7
+"noise complaint from neighbors",TKT-2024-123,"Barking dog noise disturbance reported by multiple neighbors",0.81,"Service Requests","In Progress",18.2
+"pothole needs repair on street",TKT-2024-023,"Large pothole on Main Street causing vehicle damage reports",0.92,"Infrastructure Issues","Resolved",72.5
+"pothole needs repair on street",TKT-2024-078,"Road surface damage from storm requires immediate attention",0.88,"Infrastructure Issues","Resolved",48.1
+"pothole needs repair on street",TKT-2024-134,"Pavement deterioration creating safety hazard for pedestrians",0.86,"Infrastructure Issues","Scheduled",6.8
+"trash not collected on time",TKT-2024-034,"Garbage collection missed in residential area due to route changes",0.91,"Service Requests","Resolved",8.3
+"trash not collected on time",TKT-2024-098,"Waste pickup delayed following equipment malfunction",0.88,"Equipment Issues","Resolved",16.7
+"trash not collected on time",TKT-2024-156,"Recycling service interruption affecting entire district",0.85,"Service Requests","In Progress",4.2
+"street light not working",TKT-2024-019,"Multiple streetlight outages reported after power grid maintenance",0.90,"Infrastructure Issues","Resolved",36.4
+"street light not working",TKT-2024-087,"LED streetlight malfunction affecting pedestrian safety",0.87,"Infrastructure Issues","Resolved",18.9
+"street light not working",TKT-2024-145,"Traffic light and street lighting system coordination issue",0.83,"Infrastructure Issues","Scheduled",12.1
+"tree branch blocking road",TKT-2024-041,"Fallen tree limbs obstructing traffic after severe weather",0.94,"Emergency Services","Resolved",2.8
+"tree branch blocking road",TKT-2024-102,"Storm damage requiring tree removal from public roadway",0.91,"Emergency Services","Resolved",5.3
+"tree branch blocking road",TKT-2024-167,"Overgrown vegetation blocking traffic signs and visibility",0.86,"Maintenance Services","Scheduled",24.0
