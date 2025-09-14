@@ -4,7 +4,7 @@
 -- Bytes Processed: ~500MB (Austin 311 subset)
 
 -- Step 1: Create dedicated dataset for hackathon demo
-CREATE SCHEMA IF NOT EXISTS `your-project.support_demo`
+CREATE SCHEMA IF NOT EXISTS `bigquery-471817.support_demo`
 OPTIONS (
   description = "BigQuery AI Hackathon - Zero-Touch Support Bot Dataset",
   location = "US"
@@ -12,7 +12,7 @@ OPTIONS (
 
 -- Step 2: Import Austin 311 data as proxy for enterprise support tickets
 -- Partitioned by created_date for performance optimization
-CREATE OR REPLACE TABLE `your-project.support_demo.raw_tickets`
+CREATE OR REPLACE TABLE `bigquery-471817.support_demo.raw_tickets`
 PARTITION BY DATE(created_at)
 CLUSTER BY category, assigned_team
 AS
@@ -56,4 +56,4 @@ SELECT
   COUNT(DISTINCT assigned_team) as unique_teams,
   ROUND(AVG(text_length), 1) as avg_text_length,
   COUNTIF(text_quality = 'detailed') / COUNT(*) * 100 as pct_detailed_tickets
-FROM `your-project.support_demo.raw_tickets`;
+FROM `bigquery-471817.support_demo.raw_tickets`;

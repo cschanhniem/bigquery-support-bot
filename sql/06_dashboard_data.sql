@@ -3,7 +3,7 @@
 -- Runtime: <30 seconds | Cost: ~$0.02 per run
 
 -- Dashboard-ready current insights with performance optimization
-CREATE OR REPLACE VIEW `${PROJECT_ID}.support_demo.dashboard_current_insights` AS
+CREATE OR REPLACE VIEW `bigquery-471817.support_demo.dashboard_current_insights` AS
 SELECT
   event_date,
   summary,
@@ -19,12 +19,12 @@ SELECT
   -- Add trend indicators
   LAG(summary) OVER (ORDER BY event_date) AS prev_summary,
   DATE_DIFF(CURRENT_DATE(), event_date, DAY) AS days_ago
-FROM `${PROJECT_ID}.support_demo.daily_insights`
+FROM `bigquery-471817.support_demo.daily_insights`
 WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
 ORDER BY event_date DESC;
 
 -- Dashboard-ready forecast data with confidence intervals
-CREATE OR REPLACE VIEW `${PROJECT_ID}.support_demo.dashboard_forecast` AS
+CREATE OR REPLACE VIEW `bigquery-471817.support_demo.dashboard_forecast` AS
 SELECT
   forecast_timestamp AS forecast_date,
   forecast_value AS predicted_tickets,
@@ -42,37 +42,37 @@ SELECT
   -- Add day-of-week context
   EXTRACT(DAYOFWEEK FROM forecast_timestamp) AS day_of_week,
   FORMAT_DATE('%A', forecast_timestamp) AS weekday_name
-FROM `${PROJECT_ID}.support_demo.ticket_forecast`
+FROM `bigquery-471817.support_demo.ticket_forecast`
 WHERE forecast_timestamp >= CURRENT_DATE()
 ORDER BY forecast_timestamp;
 
 -- Real-time metrics for dashboard KPI cards
-CREATE OR REPLACE VIEW `${PROJECT_ID}.support_demo.dashboard_kpis` AS
+CREATE OR REPLACE VIEW `bigquery-471817.support_demo.dashboard_kpis` AS
 SELECT
   -- Current metrics
-  (SELECT COUNT(*) FROM `${PROJECT_ID}.support_demo.daily_insights` 
+  (SELECT COUNT(*) FROM `bigquery-471817.support_demo.daily_insights` 
    WHERE event_date = CURRENT_DATE()) AS tickets_today,
   
-  (SELECT sentiment FROM `${PROJECT_ID}.support_demo.daily_insights` 
+  (SELECT sentiment FROM `bigquery-471817.support_demo.daily_insights` 
    WHERE event_date = CURRENT_DATE()) AS today_sentiment,
    
-  (SELECT root_cause FROM `${PROJECT_ID}.support_demo.daily_insights` 
+  (SELECT root_cause FROM `bigquery-471817.support_demo.daily_insights` 
    WHERE event_date = CURRENT_DATE()) AS primary_root_cause,
    
   -- Trend indicators
   (SELECT AVG(CASE WHEN sentiment = 'positive' THEN 1.0 ELSE 0.0 END)
-   FROM `${PROJECT_ID}.support_demo.daily_insights`
+   FROM `bigquery-471817.support_demo.daily_insights`
    WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)) AS positive_sentiment_rate_7d,
    
   -- Next day forecast
-  (SELECT forecast_value FROM `${PROJECT_ID}.support_demo.ticket_forecast`
+  (SELECT forecast_value FROM `bigquery-471817.support_demo.ticket_forecast`
    WHERE DATE(forecast_timestamp) = DATE_ADD(CURRENT_DATE(), INTERVAL 1 DAY)) AS tomorrow_forecast,
    
   -- Data freshness indicator
-  (SELECT MAX(event_date) FROM `${PROJECT_ID}.support_demo.daily_insights`) AS last_update_date;
+  (SELECT MAX(event_date) FROM `bigquery-471817.support_demo.daily_insights`) AS last_update_date;
 
 -- Performance optimization: materialized table for heavy dashboard queries
-CREATE OR REPLACE TABLE `${PROJECT_ID}.support_demo.dashboard_cache` 
+CREATE OR REPLACE TABLE `bigquery-471817.support_demo.dashboard_cache` 
 PARTITION BY event_date
 CLUSTER BY root_cause, sentiment AS
 SELECT 
@@ -91,8 +91,8 @@ SELECT
   -- Add similar ticket references from vector search
   sr.similar_ticket_id,
   sr.similarity_score
-FROM `${PROJECT_ID}.support_demo.daily_insights` di
-LEFT JOIN `${PROJECT_ID}.support_demo.similar_tickets` sr
+FROM `bigquery-471817.support_demo.daily_insights` di
+LEFT JOIN `bigquery-471817.support_demo.similar_tickets` sr
   ON di.event_date = sr.query_date
 WHERE di.event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY);
 

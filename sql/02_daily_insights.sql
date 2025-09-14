@@ -4,7 +4,7 @@
 -- Key Innovation: Multi-column analysis with constrained outputs
 
 -- Enhanced AI.GENERATE_TABLE with few-shot examples and schema enforcement
-CREATE OR REPLACE TABLE `your-project.support_demo.daily_insights` AS
+CREATE OR REPLACE TABLE `bigquery-471817.support_demo.daily_insights` AS
 SELECT
   DATE(created_at) AS event_date,
   COUNT(*) AS total_tickets,
@@ -43,7 +43,7 @@ sentiment_score: Overall sentiment (positive|neutral|negative)''',
   ) AS ai_analysis
   
 FROM 
-  `your-project.support_demo.raw_tickets`
+  `bigquery-471817.support_demo.raw_tickets`
 WHERE 
   -- Focus on recent days with sufficient data
   DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
@@ -72,6 +72,6 @@ SELECT
   CAST(total_tickets AS FLOAT64) AS tickets_analyzed,
   CURRENT_TIMESTAMP() AS analysis_timestamp
 FROM 
-  `your-project.support_demo.daily_insights`
+  `bigquery-471817.support_demo.daily_insights`
 ORDER BY 
   event_date DESC;

@@ -40,7 +40,7 @@ similar_tickets AS (
     END AS match_quality
   FROM 
     VECTOR_SEARCH(
-      TABLE `your-project.support_demo.ticket_embeddings`,
+      TABLE `bigquery-471817.support_demo.ticket_embeddings`,
       'text_embedding',
       (SELECT search_vector FROM query_embedding),
       top_k => 10,
@@ -78,7 +78,7 @@ SELECT
   DATE(base.created_at) AS ticket_date
 FROM 
   VECTOR_SEARCH(
-    TABLE `your-project.support_demo.ticket_embeddings`,
+    TABLE `bigquery-471817.support_demo.ticket_embeddings`,
     'text_embedding',
     (SELECT search_vector FROM noise_query),
     top_k => 5,
@@ -111,7 +111,7 @@ infrastructure_matches AS (
     ) AS top_examples
   FROM 
     VECTOR_SEARCH(
-      TABLE `your-project.support_demo.ticket_embeddings`,
+      TABLE `bigquery-471817.support_demo.ticket_embeddings`,
       'text_embedding',
       (SELECT search_vector FROM infrastructure_query),
       top_k => 50,
@@ -136,7 +136,7 @@ WITH semantic_results AS (
     'Semantic Search' AS search_type,
     COUNT(*) AS result_count
   FROM VECTOR_SEARCH(
-    TABLE `your-project.support_demo.ticket_embeddings`,
+    TABLE `bigquery-471817.support_demo.ticket_embeddings`,
     'text_embedding',
     (
       SELECT ML.GENERATE_EMBEDDING(
@@ -153,7 +153,7 @@ keyword_results AS (
   SELECT 
     'Keyword Search' AS search_type,
     COUNT(*) AS result_count
-  FROM `your-project.support_demo.ticket_embeddings`
+  FROM `bigquery-471817.support_demo.ticket_embeddings`
   WHERE LOWER(text) LIKE '%water%' 
      OR LOWER(text) LIKE '%leak%'
      OR LOWER(text) LIKE '%plumb%'
@@ -175,7 +175,7 @@ WITH resolved_similar_tickets AS (
     DATE_DIFF(CURRENT_DATE(), DATE(base.created_at), DAY) AS days_since_created
   FROM 
     VECTOR_SEARCH(
-      TABLE `your-project.support_demo.ticket_embeddings`,
+      TABLE `bigquery-471817.support_demo.ticket_embeddings`,
       'text_embedding',
       (
         SELECT ML.GENERATE_EMBEDDING(
