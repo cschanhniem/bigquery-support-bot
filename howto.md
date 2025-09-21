@@ -72,7 +72,7 @@ Before starting, ensure you have:
 ## 🚀 Quick Start
 
 1. **BigQuery Setup**: Execute SQL files in order (`sql/01*.sql` → `sql/07*.sql`)
-2. **Notebook**: Run `BigQuery-AI-Support-Bot-Notebook.ipynb` 
+2. **Interactive Notebook**: Run `BigQuery-AI-Support-Bot-Notebook.ipynb` or [view live on GitHub](https://github.com/cschanhniem/bigquery-support-bot/blob/main/BigQuery-AI-Support-Bot-Notebook.ipynb) 
 3. **Dashboard**: Connect Looker Studio to BigQuery tables
 
 **For Judges**: See [FOR-JUDGES.md](./FOR-JUDGES.md) for 90-second review path.

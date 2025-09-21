@@ -2,8 +2,8 @@
 
 ## 🔗 Quick Links for Judges
 - **📊 [Live Dashboard](https://lookerstudio.google.com/reporting/8722e185-3344-4bc1-859d-ab516890b0e9)** - Real-time executive insights
-
-- **⚡ [GitHub Repository](https://github.com/auravana/bigquery-support-bot)** - Full source code
+- **📓 [Interactive Notebook](https://github.com/cschanhniem/bigquery-support-bot/blob/main/BigQuery-AI-Support-Bot-Notebook.ipynb)** - Complete implementation with live data
+- **⚡ [GitHub Repository](https://github.com/cschanhniem/bigquery-support-bot)** - Full source code
 
 ---
 
@@ -205,7 +205,8 @@ We utilized the **Customer Support Tickets dataset from [OpenDataBay.com](https:
 ## Repository & Resources
 
 ### Public Code Access
-- **GitHub**: [https://github.com/cschanhniem/bigquery-support-bot](https://github.com/cschanhniem/bigquery-support-bot)
+- **GitHub Repository**: [https://github.com/cschanhniem/bigquery-support-bot](https://github.com/cschanhniem/bigquery-support-bot)
+- **Interactive Notebook**: [https://github.com/cschanhniem/bigquery-support-bot/blob/main/BigQuery-AI-Support-Bot-Notebook.ipynb](https://github.com/cschanhniem/bigquery-support-bot/blob/main/BigQuery-AI-Support-Bot-Notebook.ipynb)
 - **Demo Video**: [https://www.youtube.com/watch?v=c6zv0YXer4k](https://www.youtube.com/watch?v=c6zv0YXer4k)
 
 ### Documentation

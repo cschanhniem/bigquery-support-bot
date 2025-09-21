@@ -109,7 +109,7 @@ graph TD
 ## 🚀 **Quick Start for Judges**
 
 ### No BigQuery Access?
-- **[Live Notebook](./BigQuery-AI-Support-Bot-Notebook.ipynb)** - Runs with sample data
+- **[Interactive Notebook](https://github.com/cschanhniem/bigquery-support-bot/blob/main/BigQuery-AI-Support-Bot-Notebook.ipynb)** - Runs with sample data, live on GitHub
 - **[Kaggle Writeup](./Kaggle-Writeup.md)** - Full technical documentation
 
 ### Have BigQuery Access?
