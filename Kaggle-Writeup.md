@@ -1,10 +1,9 @@
 # Zero-Touch Support Insights & Forecasting Bot
 
 ## 🔗 Quick Links for Judges
-- **📊 [Live Dashboard](https://lookerstudio.google.com/reporting/demo-dashboard)** - Real-time executive insights
-- **📓 [Public Notebook](https://kaggle.com/username/zero-touch-support-insights)** - Complete implementation 
-- **🎥 [2-Min Demo Video](https://youtube.com/watch?v=demo-video)** - Live walkthrough
-- **⚡ [GitHub Repository](https://github.com/username/bigquery-support-bot)** - Full source code
+- **📊 [Live Dashboard](https://lookerstudio.google.com/reporting/8722e185-3344-4bc1-859d-ab516890b0e9)** - Real-time executive insights
+
+- **⚡ [GitHub Repository](https://github.com/auravana/bigquery-support-bot)** - Full source code
 
 ---
 
@@ -206,7 +205,7 @@ We utilized the **Customer Support Tickets dataset from [OpenDataBay.com](https:
 ## Repository & Resources
 
 ### Public Code Access
-- **GitHub**: [github.com/username/bigquery-support-bot](https://github.com/username/bigquery-support-bot)
+- **GitHub**: [https://github.com/cschanhniem/bigquery-support-bot](https://github.com/cschanhniem/bigquery-support-bot)
 - **Kaggle Notebook**: [kaggle.com/username/zero-touch-support-insights](https://kaggle.com/username/zero-touch-support-insights)
 - **Demo Video**: [youtube.com/watch?v=demo-video](https://youtube.com/watch?v=demo-video)
 
@@ -216,12 +215,6 @@ We utilized the **Customer Support Tickets dataset from [OpenDataBay.com](https:
 - Sample dashboard configurations and best practices
 - Performance benchmarks and optimization guide
 
-## BigQuery AI Experience & Feedback
-
-### Team Experience
-- **BigQuery AI**: 3 months hands-on experience with ML functions
-- **Google Cloud**: 12 months enterprise deployment experience
-- **Data Analytics**: 5+ years in business intelligence and reporting
 
 ### Technology Feedback
 **Strengths:**
