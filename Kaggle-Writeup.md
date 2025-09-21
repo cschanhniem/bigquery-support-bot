@@ -232,7 +232,7 @@ We utilized the **Customer Support Tickets dataset from [OpenDataBay.com](https:
 ## ⚠️ Limitations & Future Work
 
 ### Current Limitations
-- **Data Quality Dependency**: AI insights quality correlates with ticket description completeness (~20% Austin 311 records lack detailed descriptions)
+- **Data Quality Dependency**: AI insights quality correlates with ticket description completeness 
 - **Language Support**: Currently optimized for English text; multilingual support requires additional prompt engineering
 - **Context Window**: AI.GENERATE_TABLE limited to ~100 tickets per batch to avoid token limits
 - **Real-time Constraints**: Daily batch processing vs true real-time (acceptable for executive reporting)
@@ -241,7 +241,7 @@ We utilized the **Customer Support Tickets dataset from [OpenDataBay.com](https:
 ### Responsible AI Considerations
 - **Human Oversight**: Recommend human-in-the-loop validation for mission-critical decisions
 - **Bias Mitigation**: Few-shot examples include diverse ticket types and sentiment distributions
-- **Data Privacy**: Austin 311 contains public records only; enterprise deployment requires PII handling protocols
+
 - **Explainability**: AI-generated summaries include rationale, but root cause logic could be more transparent
 
 ## 🚀 Future Enhancements

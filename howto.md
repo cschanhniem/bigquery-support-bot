@@ -174,7 +174,7 @@ Execute each file individually in the BigQuery console:
 
 1. **Dataset Setup** (`sql/01_setup_dataset.sql`):
    ```sql
-   -- Creates support_demo dataset and imports Austin 311 data
+   -- Creates support_demo dataset and imports data
    -- Expected runtime: 2-3 minutes
    -- Cost: ~$0.10
    ```
