@@ -206,8 +206,7 @@ We utilized the **Customer Support Tickets dataset from [OpenDataBay.com](https:
 
 ### Public Code Access
 - **GitHub**: [https://github.com/cschanhniem/bigquery-support-bot](https://github.com/cschanhniem/bigquery-support-bot)
-- **Kaggle Notebook**: [kaggle.com/username/zero-touch-support-insights](https://kaggle.com/username/zero-touch-support-insights)
-- **Demo Video**: [youtube.com/watch?v=demo-video](https://youtube.com/watch?v=demo-video)
+- **Demo Video**: [https://www.youtube.com/watch?v=c6zv0YXer4k](https://www.youtube.com/watch?v=c6zv0YXer4k)
 
 ### Documentation
 - Complete setup instructions and SQL queries
