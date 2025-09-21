@@ -112,7 +112,7 @@ graph LR
 
 ## 🏅 **Awards Targeting**
 
-**Primary**: Best in Generative AI Category ($6,000-$15,000)  
+**Primary**: Best in Generative AI Category
 **Approach**: AI Architect with enterprise-scale impact demonstration
 
 **Scoring Strengths**:

@@ -1,6 +1,6 @@
 # FOR JUDGES - 90-Second Review Guide
 
-**$24.7M annual savings** • **8,469 authentic tickets** • **3-minute processing** • **Production ready**
+**Could be $ millions  annual savings** • **8,469 authentic tickets** • **3-minute processing** • **Production ready**
 
 ---
 
