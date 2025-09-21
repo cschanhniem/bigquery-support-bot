@@ -19,7 +19,7 @@ Transform 8,469 customer support tickets into executive intelligence in under 3 
 |-------|------|---------|
 | **📝 Kaggle Writeup** | [Kaggle-Writeup.md](./Kaggle-Writeup.md) | Complete technical submission |
 | **🎥 Demo Video** | [Video Script](./video-script.md) | 2-minute executive walkthrough |
-| **💻 Live Notebook** | [BigQuery-AI-Support-Bot-Notebook.ipynb](./BigQuery-AI-Support-Bot-Notebook.ipynb) | Interactive technical demo |
+| **💻 Interactive Notebook** | [Live on GitHub](https://github.com/cschanhniem/bigquery-support-bot/blob/main/BigQuery-AI-Support-Bot-Notebook.ipynb) | Production data analysis |
 | **⚡ Quick Start** | [FOR-JUDGES.md](./FOR-JUDGES.md) | 90-second judge review guide |
 | **📊 Dashboard Guide** | [howto.md#looker-studio](./howto.md#phase-3-looker-studio-dashboard-60-minutes) | Looker Studio setup |
 
