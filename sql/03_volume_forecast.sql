@@ -4,7 +4,7 @@
 -- Innovation: Automatic seasonality detection and confidence bounds
 
 -- Step 1: Prepare robust time-series data with data quality checks
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.daily_volumes` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.daily_volumes` AS
 WITH quality_checked_data AS (
   SELECT
     DATE(created_at) AS ds,  -- Required: date column
@@ -15,7 +15,7 @@ WITH quality_checked_data AS (
     AVG(text_length) AS avg_text_length,
     COUNTIF(text_quality = 'detailed') / COUNT(*) AS quality_ratio
   FROM 
-    `bigquery-471817.support_demo.raw_tickets`
+    `animated-graph-458306-r5.support_demo.raw_tickets`
   WHERE 
     DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY)
     AND created_at < CURRENT_DATE()  -- Avoid partial current day
@@ -41,7 +41,7 @@ ORDER BY ds;
 
 -- Step 2: 🚀 CORE INNOVATION: AI.FORECAST with comprehensive configuration
 -- Generate 30-day forecast with multiple confidence levels
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.volume_forecast` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.volume_forecast` AS
 SELECT
   forecast_timestamp,
   forecast_value,
@@ -67,9 +67,9 @@ SELECT
   
   -- Operational recommendations
   CASE 
-    WHEN forecast_value > (SELECT AVG(y) * 1.2 FROM `bigquery-471817.support_demo.daily_volumes`) 
+    WHEN forecast_value > (SELECT AVG(y) * 1.2 FROM `animated-graph-458306-r5.support_demo.daily_volumes`) 
     THEN 'Scale Up Support Team'
-    WHEN forecast_value < (SELECT AVG(y) * 0.8 FROM `bigquery-471817.support_demo.daily_volumes`) 
+    WHEN forecast_value < (SELECT AVG(y) * 0.8 FROM `animated-graph-458306-r5.support_demo.daily_volumes`) 
     THEN 'Optimize Resource Allocation'
     ELSE 'Maintain Current Staffing'
   END AS staffing_recommendation
@@ -79,7 +79,7 @@ FROM
     MODEL (
       -- Train on cleaned time series data
       SELECT ds, y_smoothed AS y 
-      FROM `bigquery-471817.support_demo.daily_volumes`
+      FROM `animated-graph-458306-r5.support_demo.daily_volumes`
       ORDER BY ds
     ),
     STRUCT(
@@ -97,7 +97,7 @@ WITH historical_performance AS (
     AVG(y) AS mean_historical,
     STDDEV(y) AS stddev_historical,
     COUNT(*) AS days_of_history
-  FROM `bigquery-471817.support_demo.daily_volumes`
+  FROM `animated-graph-458306-r5.support_demo.daily_volumes`
 ),
 forecast_summary AS (
   SELECT
@@ -106,7 +106,7 @@ forecast_summary AS (
     MAX(forecast_value) AS max_forecast,
     AVG(standard_error) AS avg_standard_error,
     COUNT(*) AS forecast_days
-  FROM `bigquery-471817.support_demo.volume_forecast`
+  FROM `animated-graph-458306-r5.support_demo.volume_forecast`
 )
 SELECT
   'Forecast Summary' AS metric_type,

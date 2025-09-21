@@ -3,7 +3,7 @@
 -- Runtime: <45 seconds | Cost: ~$0.05 per run
 
 -- Baseline evaluation: Compare AI.GENERATE_TABLE vs simple heuristics
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.evaluation_baseline` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.evaluation_baseline` AS
 WITH baseline_heuristics AS (
   SELECT 
     created_at,
@@ -22,7 +22,7 @@ WITH baseline_heuristics AS (
       WHEN LOWER(text) LIKE '%great%' OR LOWER(text) LIKE '%excellent%' OR LOWER(text) LIKE '%love%' THEN 'positive'
       ELSE 'neutral'
     END as baseline_sentiment
-  FROM `bigquery-471817.support_demo.raw_tickets`
+  FROM `animated-graph-458306-r5.support_demo.raw_tickets`
   WHERE DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
     AND LENGTH(text) > 10
   LIMIT 500  -- Sample for evaluation
@@ -31,7 +31,7 @@ ai_results AS (
   SELECT
     DATE(created_at) as event_date,
     COUNT(*) as daily_count
-  FROM `bigquery-471817.support_demo.raw_tickets`
+  FROM `animated-graph-458306-r5.support_demo.raw_tickets`
   WHERE DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
   GROUP BY 1
 )
@@ -41,19 +41,19 @@ SELECT
   di.sentiment as ai_sentiment,
   ar.daily_count
 FROM baseline_heuristics bh
-LEFT JOIN `bigquery-471817.support_demo.daily_insights` di
+LEFT JOIN `animated-graph-458306-r5.support_demo.daily_insights` di
   ON DATE(bh.created_at) = di.event_date
 LEFT JOIN ai_results ar
   ON DATE(bh.created_at) = ar.event_date;
 
 -- Model performance metrics with statistical significance
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.model_performance` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.model_performance` AS
 WITH confusion_matrix AS (
   SELECT
     ai_sentiment,
     baseline_sentiment,
     COUNT(*) as count
-  FROM `bigquery-471817.support_demo.evaluation_baseline`
+  FROM `animated-graph-458306-r5.support_demo.evaluation_baseline`
   WHERE ai_sentiment IS NOT NULL AND baseline_sentiment IS NOT NULL
   GROUP BY 1, 2
 ),
@@ -72,10 +72,10 @@ forecast_accuracy AS (
     AVG(ABS(forecast_value - daily_count)) as mae,
     SQRT(AVG(POW(forecast_value - daily_count, 2))) as rmse,
     COUNT(*) as forecast_days
-  FROM `bigquery-471817.support_demo.ticket_forecast` tf
+  FROM `animated-graph-458306-r5.support_demo.ticket_forecast` tf
   INNER JOIN (
     SELECT DATE(created_at) as date, COUNT(*) as daily_count
-    FROM `bigquery-471817.support_demo.raw_tickets`
+    FROM `animated-graph-458306-r5.support_demo.raw_tickets`
     GROUP BY 1
   ) actual ON DATE(tf.forecast_timestamp) = actual.date
   WHERE DATE(tf.forecast_timestamp) <= CURRENT_DATE()  -- Only past forecasts for evaluation
@@ -105,11 +105,11 @@ FROM sentiment_accuracy sa
 CROSS JOIN forecast_accuracy fa;
 
 -- Root cause analysis with trend detection
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.root_cause_trends` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.root_cause_trends` AS
 SELECT
   root_cause,
   COUNT(*) as total_occurrences,
-  COUNT(*) / (SELECT COUNT(*) FROM `bigquery-471817.support_demo.daily_insights`) * 100 as percentage,
+  COUNT(*) / (SELECT COUNT(*) FROM `animated-graph-458306-r5.support_demo.daily_insights`) * 100 as percentage,
   AVG(CASE WHEN sentiment = 'negative' THEN 1.0 ELSE 0.0 END) * 100 as negative_sentiment_rate,
   -- Trend analysis
   AVG(CASE 
@@ -122,12 +122,12 @@ SELECT
     WHEN root_cause IN ('Technical Issues', 'Billing Issues') THEN 'Medium Priority'
     ELSE 'Low Priority'
   END as priority_level
-FROM `bigquery-471817.support_demo.daily_insights`
+FROM `animated-graph-458306-r5.support_demo.daily_insights`
 GROUP BY root_cause
 ORDER BY total_occurrences DESC;
 
 -- Data quality assessment
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.data_quality_report` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.data_quality_report` AS
 WITH quality_checks AS (
   SELECT
     'raw_tickets' as table_name,
@@ -137,7 +137,7 @@ WITH quality_checks AS (
     AVG(LENGTH(text)) as avg_text_length,
     MIN(DATE(created_at)) as earliest_date,
     MAX(DATE(created_at)) as latest_date
-  FROM `bigquery-471817.support_demo.raw_tickets`
+  FROM `animated-graph-458306-r5.support_demo.raw_tickets`
   
   UNION ALL
   
@@ -149,7 +149,7 @@ WITH quality_checks AS (
     AVG(LENGTH(summary)) as avg_summary_length,
     MIN(event_date) as earliest_date,
     MAX(event_date) as latest_date
-  FROM `bigquery-471817.support_demo.daily_insights`
+  FROM `animated-graph-458306-r5.support_demo.daily_insights`
 )
 SELECT 
   *,
@@ -168,7 +168,7 @@ SELECT
 FROM quality_checks;
 
 -- Executive summary with key insights
-CREATE OR REPLACE VIEW `bigquery-471817.support_demo.executive_summary` AS
+CREATE OR REPLACE VIEW `animated-graph-458306-r5.support_demo.executive_summary` AS
 SELECT
   -- Performance Summary
   mp.performance_metrics.sentiment_accuracy_pct as ai_accuracy,
@@ -179,23 +179,23 @@ SELECT
   mp.business_impact.daily_cost_usd as operational_cost,
   
   -- Current State
-  (SELECT COUNT(*) FROM `bigquery-471817.support_demo.daily_insights`) as days_analyzed,
-  (SELECT root_cause FROM `bigquery-471817.support_demo.root_cause_trends` 
+  (SELECT COUNT(*) FROM `animated-graph-458306-r5.support_demo.daily_insights`) as days_analyzed,
+  (SELECT root_cause FROM `animated-graph-458306-r5.support_demo.root_cause_trends` 
    ORDER BY total_occurrences DESC LIMIT 1) as top_root_cause,
   (SELECT ROUND(negative_sentiment_rate, 1) 
-   FROM `bigquery-471817.support_demo.root_cause_trends`
+   FROM `animated-graph-458306-r5.support_demo.root_cause_trends`
    ORDER BY total_occurrences DESC LIMIT 1) as top_cause_negative_rate,
    
   -- Data Quality
   (SELECT AVG(CAST(completeness_pct AS FLOAT64)) 
-   FROM `bigquery-471817.support_demo.data_quality_report`) as avg_data_quality,
+   FROM `animated-graph-458306-r5.support_demo.data_quality_report`) as avg_data_quality,
    
   -- ROI Calculation
   ROUND(mp.business_impact.estimated_annual_savings_usd / 
         (CAST(REPLACE(mp.business_impact.daily_cost_usd, '$', '') AS FLOAT64) * 365), 1) as roi_ratio,
         
   CURRENT_TIMESTAMP() as report_generated_at
-FROM `bigquery-471817.support_demo.model_performance` mp;
+FROM `animated-graph-458306-r5.support_demo.model_performance` mp;
 
 -- Performance optimization notes:
 -- • All tables use appropriate partitioning and clustering
@@ -216,6 +216,6 @@ EXPORT DATA OPTIONS(
   overwrite=true,
   header=true
 ) AS
-SELECT * FROM `bigquery-471817.support_demo.executive_summary`;
+SELECT * FROM `animated-graph-458306-r5.support_demo.executive_summary`;
 
 -- Note: Uncomment EXPORT DATA section above to create CSV snapshot for offline demo

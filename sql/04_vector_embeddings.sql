@@ -4,7 +4,7 @@
 -- Innovation: High-dimensional semantic understanding at scale
 
 -- Step 1: Prepare text data for embedding generation with quality filtering
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.embedding_candidates` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.embedding_candidates` AS
 WITH text_prepared AS (
   SELECT
     ticket_id,
@@ -24,7 +24,7 @@ WITH text_prepared AS (
     text_length,
     text_quality
   FROM 
-    `bigquery-471817.support_demo.raw_tickets`
+    `animated-graph-458306-r5.support_demo.raw_tickets`
   WHERE 
     text IS NOT NULL
     AND LENGTH(text) >= 20
@@ -49,7 +49,7 @@ LIMIT 10000;  -- Manageable subset for demonstration
 
 -- Step 2: 🚀 GENERATE EMBEDDINGS: ML.GENERATE_EMBEDDING with retry safety
 -- Partitioned approach for handling large datasets
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.ticket_embeddings` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.ticket_embeddings` AS
 SELECT
   ticket_id,
   contextual_text AS text,  -- Keep original for reference
@@ -72,7 +72,7 @@ SELECT
   CURRENT_TIMESTAMP() AS embedding_created_at
   
 FROM 
-  `bigquery-471817.support_demo.embedding_candidates`
+  `animated-graph-458306-r5.support_demo.embedding_candidates`
 WHERE 
   contextual_text IS NOT NULL;
 
@@ -87,7 +87,7 @@ WITH embedding_stats AS (
     AVG(embedding_text_length) AS avg_text_length,
     MIN(created_at) AS earliest_ticket,
     MAX(created_at) AS latest_ticket
-  FROM `bigquery-471817.support_demo.ticket_embeddings`
+  FROM `animated-graph-458306-r5.support_demo.ticket_embeddings`
 )
 SELECT
   'Embedding Generation Summary' AS metric_type,
@@ -105,7 +105,7 @@ FROM embedding_stats;
 -- Note: Only create if working with >1M rows in production
 /*
 CREATE VECTOR INDEX IF NOT EXISTS ticket_similarity_index
-ON `bigquery-471817.support_demo.ticket_embeddings`(text_embedding)
+ON `animated-graph-458306-r5.support_demo.ticket_embeddings`(text_embedding)
 OPTIONS (
   index_type = 'IVF',
   distance_type = 'COSINE',
@@ -129,7 +129,7 @@ sample_similarities AS (
     t.category,
     -- Calculate cosine similarity
     (1 - COSINE_DISTANCE(t.text_embedding, q.query_embedding)) AS similarity_score
-  FROM `bigquery-471817.support_demo.ticket_embeddings` t
+  FROM `animated-graph-458306-r5.support_demo.ticket_embeddings` t
   CROSS JOIN test_query q
   WHERE t.text_embedding IS NOT NULL
   ORDER BY similarity_score DESC

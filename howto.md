@@ -135,7 +135,44 @@ git push origin main
    ```
 
 ### Step 2.2: Execute SQL Files in Order
+
+**Option A: Using Local Python Script (Recommended)**
+```bash
+# Navigate to project directory
+cd /path/to/bigquery-support-bot
+
+# Set up Python environment
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Authenticate with Google Cloud
+gcloud auth login
+gcloud auth application-default login
+
+# Run automated deployment script
+python run_local.py
+```
+
+**Option B: Using BigQuery CLI**
 Replace `YOUR_PROJECT_ID` in all SQL files with your actual project ID, then execute:
+```bash
+# Set project ID
+export PROJECT_ID="your-project-id"
+# export PROJECT_ID="animated-graph-458306-r5"
+
+# Execute files in order
+bq query --use_legacy_sql=false --project_id=$PROJECT_ID < sql/01_setup_dataset.sql
+bq query --use_legacy_sql=false --project_id=$PROJECT_ID < sql/02_daily_insights.sql
+bq query --use_legacy_sql=false --project_id=$PROJECT_ID < sql/03_volume_forecast.sql
+bq query --use_legacy_sql=false --project_id=$PROJECT_ID < sql/04_vector_embeddings.sql
+bq query --use_legacy_sql=false --project_id=$PROJECT_ID < sql/05_semantic_search.sql
+bq query --use_legacy_sql=false --project_id=$PROJECT_ID < sql/06_dashboard_data.sql
+bq query --use_legacy_sql=false --project_id=$PROJECT_ID < sql/07_summary_stats.sql
+```
+
+**Option C: Manual BigQuery Console**
+Execute each file individually in the BigQuery console:
 
 1. **Dataset Setup** (`sql/01_setup_dataset.sql`):
    ```sql
@@ -201,6 +238,117 @@ Expected tables:
 - `ticket_embeddings` (~10,000 rows)
 - `similar_tickets` (~15 rows)
 - Plus dashboard views and cache tables
+
+---
+
+## 💻 Phase 2.5: Local Terminal Development (Optional - 30 minutes)
+
+### Running from Local Terminal
+
+**Complete Local Setup:**
+```bash
+# Clone and setup project
+git clone https://github.com/YOUR_USERNAME/bigquery-support-bot.git
+cd bigquery-support-bot
+
+# Setup Python environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+pip install jupyter ipykernel
+
+# Setup Google Cloud authentication
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project YOUR_PROJECT_ID
+
+# Enable required APIs
+gcloud services enable bigquery.googleapis.com
+gcloud services enable aiplatform.googleapis.com
+gcloud services enable bigqueryml.googleapis.com
+```
+
+### Automated SQL Deployment
+```bash
+# Run the complete deployment pipeline
+python run_local.py
+
+# Or run individual components
+python -c "
+from run_local import setup_client, execute_sql_file
+from pathlib import Path
+client = setup_client('YOUR_PROJECT_ID')
+execute_sql_file(client, Path('sql/01_setup_dataset.sql'), 'YOUR_PROJECT_ID')
+"
+```
+
+### Local Jupyter Development
+```bash
+# Start Jupyter server
+jupyter notebook BigQuery-AI-Support-Bot-Notebook.ipynb
+
+# Or run in VS Code
+code BigQuery-AI-Support-Bot-Notebook.ipynb
+
+# Run notebook cells programmatically
+jupyter nbconvert --to notebook --execute BigQuery-AI-Support-Bot-Notebook.ipynb
+```
+
+### Terminal-Based BigQuery Operations
+```bash
+# Query data directly from terminal
+bq query --use_legacy_sql=false "
+SELECT COUNT(*) as total_tickets 
+FROM \`YOUR_PROJECT_ID.support_demo.raw_tickets\`
+"
+
+# Export results to CSV
+bq extract --destination_format=CSV \
+  YOUR_PROJECT_ID:support_demo.daily_insights \
+  gs://your-bucket/daily_insights.csv
+
+# Load new data
+bq load --source_format=CSV \
+  YOUR_PROJECT_ID:support_demo.new_tickets \
+  ./data/new_tickets.csv
+```
+
+### Development Workflow
+```bash
+# 1. Edit SQL files locally
+vim sql/02_daily_insights.sql
+
+# 2. Test individual queries
+bq query --use_legacy_sql=false < sql/02_daily_insights.sql
+
+# 3. Run full pipeline
+python run_local.py
+
+# 4. Validate results
+python -c "
+from google.cloud import bigquery
+client = bigquery.Client()
+query = 'SELECT COUNT(*) FROM \`YOUR_PROJECT_ID.support_demo.daily_insights\`'
+print(f'Records: {list(client.query(query))[0][0]}')
+"
+```
+
+### Monitoring and Debugging
+```bash
+# Check job status
+bq ls -j --max_results=10
+
+# View job details
+bq show -j JOB_ID
+
+# Monitor costs
+bq query --dry_run --use_legacy_sql=false < sql/04_vector_embeddings.sql
+
+# Debug errors
+tail -f ~/.config/gcloud/logs/$(date +%Y%m%d).log
+```
 
 ---
 
@@ -426,10 +574,39 @@ After submission, verify:
 ### Common Issues
 
 **BigQuery AI Functions Not Working**:
-- Verify Vertex AI API is enabled
+- Verify Vertex AI API is enabled: `gcloud services list --enabled | grep aiplatform`
 - Check project has billing enabled
 - Ensure you're in a supported region (US, EU)
 - Try reducing ARRAY_AGG limits if hitting token limits
+
+**Local Terminal Issues**:
+- Authentication problems:
+  ```bash
+  gcloud auth list
+  gcloud auth application-default login
+  export GOOGLE_APPLICATION_CREDENTIALS="path/to/service-account.json"
+  ```
+- Python dependencies:
+  ```bash
+  pip install --upgrade google-cloud-bigquery
+  pip install --upgrade google-auth
+  ```
+- Permission errors:
+  ```bash
+  gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+    --member="user:YOUR_EMAIL" \
+    --role="roles/bigquery.admin"
+  ```
+
+**run_local.py Script Issues**:
+- File not found: `ls -la sql/` (verify SQL files exist)
+- Project ID error: Set `export GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID`
+- Token limits: Edit SQL files to reduce ARRAY_AGG sample sizes
+
+**BigQuery CLI Problems**:
+- Install bq command: `gcloud components install bq`
+- Update components: `gcloud components update`
+- Reset configuration: `gcloud config configurations create hackathon`
 
 **Dashboard Not Loading**:
 - Verify BigQuery tables exist and have data

@@ -4,7 +4,7 @@
 -- Key Innovation: Multi-column analysis with constrained outputs
 
 -- Enhanced AI.GENERATE_TABLE with few-shot examples and schema enforcement
-CREATE OR REPLACE TABLE `bigquery-471817.support_demo.daily_insights` AS
+CREATE OR REPLACE TABLE `animated-graph-458306-r5.support_demo.daily_insights` AS
 SELECT
   DATE(created_at) AS event_date,
   COUNT(*) AS total_tickets,
@@ -12,20 +12,20 @@ SELECT
   -- 🚀 CORE INNOVATION: AI.GENERATE_TABLE with enhanced prompt engineering
   CAST(
     AI.GENERATE_TABLE(
-      '''You are an expert support analyst. Analyze these tickets and return EXACTLY 3 columns:
+      '''You are an expert customer support analyst. Analyze these customer support tickets and return EXACTLY 3 columns:
 
 Few-shot examples:
-Input: "Pothole on 5th street", "Traffic light broken", "Road maintenance needed"
-Output: executive_summary="Traffic infrastructure issues requiring immediate attention. Multiple road safety concerns reported.", top_root_cause="Infrastructure maintenance", sentiment_score="negative"
+Input: "Technical issue: Product setup - GoPro Hero not turning on", "Technical issue: Network problem - Dell XPS charging issues", "Technical issue: Peripheral compatibility - LG Smart TV connectivity problems"
+Output: executive_summary="Multiple technical product issues reported today requiring hardware troubleshooting. Primary concerns involve power/charging and device connectivity across different product lines.", top_root_cause="Technical Issues", sentiment_score="negative"
 
-Input: "Thank you for fixing my issue", "Great service team", "Problem resolved quickly"  
-Output: executive_summary="Positive customer feedback on service quality and resolution speed.", top_root_cause="Service excellence", sentiment_score="positive"
+Input: "Billing inquiry: Account access resolved", "Technical issue: Product setup completed successfully", "General inquiry: Thank you for the quick response"
+Output: executive_summary="Mixed ticket types with successful resolutions and positive customer feedback. Strong service delivery performance with quick response times.", top_root_cause="Service Excellence", sentiment_score="positive"
 
-Now analyze these tickets:
+Now analyze these customer support tickets:
 REQUIRED OUTPUT FORMAT:
-executive_summary: A 2-sentence executive summary (max 150 words)
-top_root_cause: Most common issue category (Infrastructure|Service|Technology|Policy|Other)
-sentiment_score: Overall sentiment (positive|neutral|negative)''',
+executive_summary: A 2-sentence executive summary focusing on customer impact and business implications (max 150 words)
+top_root_cause: Most common issue category (Technical Issues|Billing Issues|Product Defects|Service Excellence|Account Management|Other)
+sentiment_score: Overall customer sentiment (positive|neutral|negative)''',
       
       -- Input data with category stratification for balanced analysis
       STRUCT(
@@ -43,7 +43,7 @@ sentiment_score: Overall sentiment (positive|neutral|negative)''',
   ) AS ai_analysis
   
 FROM 
-  `bigquery-471817.support_demo.raw_tickets`
+  `animated-graph-458306-r5.support_demo.raw_tickets`
 WHERE 
   -- Focus on recent days with sufficient data
   DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
@@ -72,6 +72,6 @@ SELECT
   CAST(total_tickets AS FLOAT64) AS tickets_analyzed,
   CURRENT_TIMESTAMP() AS analysis_timestamp
 FROM 
-  `bigquery-471817.support_demo.daily_insights`
+  `animated-graph-458306-r5.support_demo.daily_insights`
 ORDER BY 
   event_date DESC;
